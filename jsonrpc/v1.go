@@ -10,6 +10,10 @@ type V1Request[T any] struct {
 }
 
 func NewV1Request[T any](method string, params ...T) V1Request[T] {
+	if params == nil {
+		params = make([]T, 0)
+	}
+
 	return V1Request[T]{
 		Method: method,
 		Params: params,

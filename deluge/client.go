@@ -3,6 +3,7 @@ package deluge
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -47,13 +48,16 @@ func NewClient(delugeHost string, delugeWebuiPort int, delugePassword string) (*
 // the client will attempt to re-authenticate and resend the request.
 func SendRequest[TResp any](c *Client, method string, params ...any) (*jsonrpc.V1Response[TResp], error) {
 	response, err := sendRequest[TResp](c, method, params...)
-	if err != nil && err.(*jsonrpc.V1Error).IsNotAuthenticated() {
-		// Auth and try again
-		_, err = c.Login()
-		if err != nil {
-			return nil, err
+	if err != nil {
+		var v1Error *jsonrpc.V1Error
+		if errors.As(err, &v1Error) && v1Error.IsNotAuthenticated() {
+			// Was an authentication error. Try to Auth and send request again
+			_, err = c.Login()
+			if err != nil {
+				return nil, err
+			}
+			response, err = sendRequest[TResp](c, method, params...)
 		}
-		response, err = sendRequest[TResp](c, method, params...)
 	}
 
 	// Either failed twice or Auth failed

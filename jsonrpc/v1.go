@@ -4,9 +4,9 @@ import "fmt"
 
 // V1Request is the JSON-RPC v1 request structure.
 type V1Request[T any] struct {
-	Method string `json:"method,omitempty"`
-	Params []T    `json:"params,omitempty"`
-	Id     int    `json:"id,omitempty"`
+	Method string `json:"method"`
+	Params []T    `json:"params"`
+	Id     int    `json:"id"`
 }
 
 func NewV1Request[T any](method string, params ...T) V1Request[T] {
@@ -19,8 +19,8 @@ func NewV1Request[T any](method string, params ...T) V1Request[T] {
 
 // V1Error is the JSON-RPC v1 error structure.
 type V1Error struct {
-	Code    int    `json:"code,omitempty"`
-	Message string `json:"message,omitempty"`
+	Code    int    `json:"code"`
+	Message string `json:"message"`
 }
 
 func (err *V1Error) Error() string {

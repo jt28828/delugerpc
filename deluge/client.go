@@ -2,7 +2,6 @@ package deluge
 
 import (
 	"bytes"
-	"delugerpc/jsonrpc"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,6 +9,8 @@ import (
 	"net/http/cookiejar"
 	"net/url"
 	"strings"
+
+	"github.com/jt28828/delugerpc/jsonrpc"
 )
 
 type Client struct {

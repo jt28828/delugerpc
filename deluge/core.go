@@ -1,8 +1,9 @@
 package deluge
 
 import (
-	"delugerpc/dto"
 	"fmt"
+
+	"github.com/jt28828/delugerpc/dto"
 )
 
 // modifyTorrentsState is a helper function to modify the state of multiple torrents
